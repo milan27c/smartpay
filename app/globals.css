@@ -1,26 +1,342 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Brand primary — deep magenta-purple (#791E7E at step 700) */
+  --color-primary-50: #f8f1f8;
+  --color-primary-100: #f1e4f2;
+  --color-primary-200: #e6c0e8;
+  --color-primary-300: #de88e3;
+  --color-primary-400: #cf52d6;
+  --color-primary-500: #b62dbd;
+  --color-primary-600: #922498;
+  --color-primary-700: #791e7e;
+  --color-primary-800: #5f1863;
+  --color-primary-900: #431146;
+  --color-primary-950: #28092a;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Warm on-brand grays (low-saturation purple hue) */
+  --color-gray-50: #faf9fa;
+  --color-gray-100: #f6f4f6;
+  --color-gray-200: #e7e3e8;
+  --color-gray-300: #d4cdd5;
+  --color-gray-400: #aa9cab;
+  --color-gray-500: #837184;
+  --color-gray-600: #625463;
+  --color-gray-700: #4a3f4a;
+  --color-gray-800: #312a32;
+  --color-gray-900: #211c21;
+
+  /* Semantic — muted, sits comfortably next to the purple */
+  --color-good-50: #eff6f0;
+  --color-good-100: #dcebde;
+  --color-good-600: #3f7a4d;
+  --color-good-700: #33633f;
+  --color-alert-50: #fbf3ec;
+  --color-alert-100: #f5e4d3;
+  --color-alert-600: #a5642a;
+  --color-alert-700: #855123;
+
+  /* Gradient accent trio (purple → pink → blue) */
+  --color-accent-purple: #a855f7;
+  --color-accent-pink: #ec4899;
+  --color-accent-blue: #3b82f6;
+
+  /* Typography — SF Pro via the system stack: true SF Pro on Apple devices,
+     Roboto on Android, Segoe UI on Windows. No webfont download (SF Pro
+     cannot be self-hosted under Apple's license). */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-gray-900);
+  font-family: var(--font-sans);
+}
+
+/* ---------- Buttons (pill, consistent motion) ---------- */
+
+.btn,
+.btn-primary,
+.btn-secondary {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700;
+}
+
+.btn-primary {
+  @apply bg-primary-700 text-white shadow-sm hover:-translate-y-0.5 hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-700/25 active:translate-y-0 active:bg-primary-800;
+}
+
+.btn-secondary {
+  @apply border-2 border-primary-700 bg-transparent text-primary-700 hover:-translate-y-0.5 hover:bg-primary-50 hover:shadow-md hover:shadow-primary-700/10 active:translate-y-0;
+}
+
+.btn-lg {
+  @apply px-7 py-3.5 text-base;
+}
+
+/* Attention-grabbing download button: constant glossy shine sweep + soft
+   pulsing glow so it draws the eye. Content sits above via z-10 in JSX. */
+.btn-spark {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: spark-glow 2.6s ease-in-out infinite;
+}
+
+.btn-spark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.55) 45%,
+    rgba(255, 255, 255, 0) 62%
+  );
+  transform: translateX(-130%);
+  animation: spark-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes spark-sweep {
+  0% {
+    transform: translateX(-130%);
+  }
+  55%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes spark-glow {
+  0%,
+  100% {
+    box-shadow: 0 4px 14px rgba(121, 30, 126, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 26px rgba(182, 45, 189, 0.6);
+  }
+}
+
+.btn-md {
+  @apply px-5 py-2.5 text-sm;
+}
+
+/* ---------- Cards (gentle lift on hover) ---------- */
+
+.card-hover {
+  @apply transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary-950/8;
+}
+
+/* ---------- Scroll-reveal (buttery: long soft ease, GPU-only props) ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+/* ---------- Animated gradient text (purple → pink → blue) ---------- */
+
+.gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-primary-700),
+    var(--color-accent-purple),
+    var(--color-accent-pink),
+    var(--color-accent-blue),
+    var(--color-accent-purple),
+    var(--color-primary-700)
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s linear infinite;
+}
+
+@keyframes gradient-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* Animated gradient strip (e.g. a top border accent on a card) */
+.gradient-bar {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-primary-700),
+    var(--color-accent-purple),
+    var(--color-accent-pink),
+    var(--color-accent-blue),
+    var(--color-accent-purple),
+    var(--color-primary-700)
+  );
+  background-size: 300% 100%;
+  animation: gradient-pan 8s linear infinite;
+}
+
+/* Content swap fade (used when toggling the before/after state) */
+.swap-in {
+  animation: swap-in 0.4s var(--ease-soft);
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auto-advance progress bar (fills over one step's dwell time) */
+.step-progress {
+  transform-origin: left;
+  animation-name: step-progress;
+  animation-timing-function: linear;
+}
+
+@keyframes step-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Aurora hero background ---------- */
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.aurora-a {
+  animation: aurora-a 18s ease-in-out infinite alternate;
+}
+
+.aurora-b {
+  animation: aurora-b 22s ease-in-out infinite alternate;
+}
+
+.aurora-c {
+  animation: aurora-c 26s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-a {
+  from {
+    transform: translate3d(-8%, -4%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(10%, 8%, 0) scale(1.15);
+  }
+}
+
+@keyframes aurora-b {
+  from {
+    transform: translate3d(6%, 6%, 0) scale(1.1);
+  }
+  to {
+    transform: translate3d(-10%, -6%, 0) scale(0.95);
+  }
+}
+
+@keyframes aurora-c {
+  from {
+    transform: translate3d(0, 10%, 0) scale(0.95);
+  }
+  to {
+    transform: translate3d(4%, -8%, 0) scale(1.2);
+  }
+}
+
+/* Faint grid texture that fades out toward the bottom */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(121, 30, 126, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(121, 30, 126, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
+}
+
+/* ---------- Horizontal gallery ---------- */
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .parallax,
+  .scroll-scale {
+    transform: none !important;
+  }
+
+  .aurora-a,
+  .aurora-b,
+  .aurora-c,
+  .gradient-text,
+  .gradient-bar,
+  .swap-in,
+  .step-progress {
+    animation: none;
+  }
+
+  .btn,
+  .card-hover {
+    transition: none;
+  }
+
+  .btn-spark {
+    animation: none;
+  }
+
+  .btn-spark::after {
+    animation: none;
+    display: none;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .card-hover {
+    transform: none !important;
+  }
 }

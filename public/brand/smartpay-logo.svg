@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="120" viewBox="0 0 400 120">
+  <rect x="12" y="24" width="72" height="72" rx="20" fill="#791E7E"/>
+  <path d="M48 44a12 12 0 0 1 12 12v4h-6v-4a6 6 0 1 0-12 0v4h18a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H36a4 4 0 0 1-4-4V64a4 4 0 0 1 4-4h0v-4a12 12 0 0 1 12-12z" fill="#fff"/>
+  <text x="104" y="76" font-family="Verdana, Geneva, sans-serif" font-size="40" font-weight="bold" fill="#791E7E">SmartPay</text>
+  <text x="106" y="98" font-family="Verdana, Geneva, sans-serif" font-size="13" fill="#837184">DUMMY LOGO — PLACEHOLDER</text>
+</svg>
