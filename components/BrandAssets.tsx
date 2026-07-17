@@ -1,60 +1,25 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
+import newLogo from "@/public/images/newlogo.png";
 import { DownloadIcon } from "./icons";
 
 // ---- Content ----
-// Swap `file`/`preview` paths when the official asset pack arrives. The Abans
-// logo is real; the SmartPay and Tiken Tika Pay marks are dummies for now.
 const SECTION = {
   eyebrow: "Brand Assets",
   titleLead: "Official Logos & ",
   titleGradient: "Brand Assets",
   intro:
-    "Download the official logos in the correct formats, ready to drop straight into your showroom materials.",
+    "Download the official Abans SmartPay logo and brand assets, ready to drop straight into your showroom materials.",
 };
 
-type Asset = {
-  name: string;
-  meta: string;
-  preview: string;
-  file: string;
-  downloadName: string;
-  /** Dummy SVG previews skip Next's image optimizer (SVG passthrough). */
-  unoptimized?: boolean;
-  previewWidth: number;
-  previewHeight: number;
+const ASSET = {
+  logoAlt: "Abans SmartPay logo",
+  heading: "Abans SmartPay Logo & Assets",
+  meta: "Official logos and brand files",
+  buttonLabel: "Download Brand Assets",
+  // Google Drive folder with the approved logo and brand assets.
+  href: "https://drive.google.com/drive/folders/1uPonVF35CzGMeVR6-Tzx03rWnuT5w_7K",
 };
-
-const ASSETS: Asset[] = [
-  {
-    name: "Abans Logo",
-    meta: "PNG · full colour",
-    preview: "/images/logo.png",
-    file: "/images/logo.png",
-    downloadName: "Abans-Logo.png",
-    previewWidth: 400,
-    previewHeight: 116,
-  },
-  {
-    name: "SmartPay Logo",
-    meta: "PNG · full colour",
-    preview: "/images/newlogo.png",
-    file: "/images/newlogo.png",
-    downloadName: "Abans-SmartPay-Logo.png",
-    previewWidth: 600,
-    previewHeight: 203,
-  },
-  {
-    name: "Tiken Tika Pay Logo",
-    meta: "SVG · dummy placeholder",
-    preview: "/brand/tiken-tika-pay-logo.svg",
-    file: "/brand/tiken-tika-pay-logo.svg",
-    downloadName: "Tiken-Tika-Pay-Logo.svg",
-    unoptimized: true,
-    previewWidth: 400,
-    previewHeight: 120,
-  },
-];
 
 export default function BrandAssets() {
   return (
@@ -73,41 +38,38 @@ export default function BrandAssets() {
           </p>
         </Reveal>
 
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {ASSETS.map((asset, index) => (
-            <Reveal as="li" key={asset.name} delay={(index % 3) * 100}>
-              <div className="card-hover flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-                <div className="flex h-36 items-center justify-center rounded-xl bg-gray-100 px-6">
-                  <Image
-                    src={asset.preview}
-                    alt={`${asset.name} preview`}
-                    width={asset.previewWidth}
-                    height={asset.previewHeight}
-                    unoptimized={asset.unoptimized}
-                    className="max-h-16 w-auto"
-                  />
-                </div>
-                <div className="mt-5 flex flex-1 items-end justify-between gap-3">
-                  <div>
-                    <h3 className="text-base font-bold text-gray-900">
-                      {asset.name}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-gray-500">{asset.meta}</p>
-                  </div>
-                  <a
-                    href={asset.file}
-                    download={asset.downloadName}
-                    className="btn-secondary btn-md shrink-0"
-                    aria-label={`Download ${asset.name}`}
-                  >
-                    <DownloadIcon className="h-4 w-4" />
-                    Download
-                  </a>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
+        <Reveal delay={150} className="mt-12">
+          <div className="card-hover flex flex-col items-center gap-8 rounded-3xl border border-gray-200 bg-white p-6 text-center shadow-sm sm:p-8 md:flex-row md:gap-10 md:text-left">
+            {/* Logo preview */}
+            <div className="flex w-full items-center justify-center rounded-2xl bg-gray-100 px-8 py-10 md:w-1/2 md:py-14">
+              <Image
+                src={newLogo}
+                alt={ASSET.logoAlt}
+                sizes="(min-width: 768px) 40vw, 80vw"
+                className="h-auto w-full max-w-xs"
+              />
+            </div>
+
+            {/* Text + download */}
+            <div className="flex flex-1 flex-col items-center md:items-start">
+              <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+                {ASSET.heading}
+              </h3>
+              <p className="mt-2 text-sm text-gray-500 sm:text-base">
+                {ASSET.meta}
+              </p>
+              <a
+                href={ASSET.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary btn-lg mt-6"
+              >
+                <DownloadIcon className="h-5 w-5" />
+                {ASSET.buttonLabel}
+              </a>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
