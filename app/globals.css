@@ -44,9 +44,12 @@
   /* Typography — SF Pro via the system stack: true SF Pro on Apple devices,
      Roboto on Android, Segoe UI on Windows. No webfont download (SF Pro
      cannot be self-hosted under Apple's license). */
+  /* Sinhala fallback is listed last so Latin glyphs still come from SF Pro
+     and only Sinhala characters fall through to Noto Sans Sinhala. */
   --font-sans:
     -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, var(--font-noto-sinhala),
+    sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* Motion */

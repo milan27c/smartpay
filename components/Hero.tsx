@@ -2,19 +2,17 @@ import Image from "next/image";
 import Reveal from "./Reveal";
 import ScrollScale from "./ScrollScale";
 import heroImage from "@/public/images/hero.jpg";
-import { CheckCircleIcon, PlayIcon } from "./icons";
+import { PlayIcon } from "./icons";
 
 // ---- Content (edit copy/media here, not in the JSX below) ----
 const HERO = {
-  eyebrow: "Abans SmartPay",
   headline: {
-    // Rendered as two lines: a muted lead, then the animated-gradient payoff.
-    lead: "Sell smartphones with",
-    gradient: "total confidence.",
+    // Rendered as two lines: a lead, then the animated-gradient payoff.
+    lead: "Smartphones ටිකෙන් ටික ගෙවන්න දෙන්න දැන් බය වෙන්න එපා.",
+    gradient: "Abans SmartPay දැන් ඔබේ සහායට.",
   },
   description:
-    "SmartPay locks a financed phone the moment a payment is missed, and unlocks it the instant the balance is settled, so your showroom can offer Tiken Tika Pay instalment plans without the fear of defaults.",
-  trustPoints: ["Auto-lock", "Auto-unlock", "Showroom-ready"],
+    "SmartPay වැඩ කරන විදිහ දැනගන්න, SmartPay Guidance Video එක බලන්න.",
   // Placeholder visual — the real intro video swaps into this same media
   // frame later (see HeroMedia below); no layout changes needed.
   media: {
@@ -35,43 +33,27 @@ export default function Hero() {
         <div className="hero-grid absolute inset-0" />
       </div>
 
-      {/* Text column — kept narrow and centered */}
-      <div className="mx-auto max-w-3xl px-4 pt-16 pb-10 text-center sm:px-6 sm:pt-20 md:pt-24">
+      {/* Text column — centered; wide enough on desktop to keep the lead to
+          two lines and the gradient line to one. */}
+      <div className="mx-auto max-w-3xl px-4 pt-16 pb-10 text-center sm:px-6 sm:pt-20 md:max-w-4xl md:pt-24 lg:max-w-5xl">
         <Reveal>
-          <p className="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            {HERO.eyebrow}
-          </p>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <h1 className="mt-5 text-4xl leading-[1.1] font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+          <h1 className="text-3xl leading-snug font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl md:leading-snug">
             <span className="block font-semibold">{HERO.headline.lead}</span>
-            <span className="gradient-text mt-1 block">
+            <span className="gradient-text mt-2 block">
               {HERO.headline.gradient}
             </span>
           </h1>
         </Reveal>
 
-        <Reveal delay={200}>
+        <Reveal delay={100}>
           <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-gray-600 sm:text-base">
             {HERO.description}
           </p>
         </Reveal>
-
-        <Reveal delay={300}>
-          <ul className="mt-5 flex items-center justify-center gap-3 text-xs font-medium whitespace-nowrap text-gray-700 sm:gap-7 sm:text-sm">
-            {HERO.trustPoints.map((point) => (
-              <li key={point} className="flex items-center gap-1.5 sm:gap-2">
-                <CheckCircleIcon className="h-4 w-4 shrink-0 text-primary-600 sm:h-4.5 sm:w-4.5" />
-                {point}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
       </div>
 
       {/* Media — full-bleed within page margins; grows toward full width on scroll */}
-      <Reveal delay={400} className="px-4 pb-16 sm:px-6 md:pb-24 lg:px-8">
+      <Reveal delay={200} className="px-4 pb-16 sm:px-6 md:pb-24 lg:px-8">
         <HeroMedia />
       </Reveal>
     </section>
